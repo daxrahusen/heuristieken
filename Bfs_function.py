@@ -1,6 +1,8 @@
 from collections import deque
 from termcolor import colored
 
+from Child import Child
+
 # define board size
 board_size_width = 18
 board_size_height = 13
@@ -20,9 +22,12 @@ EMPTY = ' '
 GATE = colored('#', 'red')
 XLINE = '-'
 YLINE = '|'
+BEGIN = colored('#', 'green')
+END = colored('#', 'green')
 
 class Bfs_function:
-    #
+
+    # standard initializer with board
     def __init__(self, board):
         self.board = board
         self.queue = deque()
@@ -72,7 +77,8 @@ class Bfs_function:
 
                     self.print_child_state(child)
 
-        if self.queue[0][0] == x_destinations[0] and self.queue[0][1] == y_destinations[0]:
+        if child[0] == x_destinations[0] and child[1] == y_destinations[0]:
+
             solution = True
             return solution
         else:
