@@ -1,8 +1,6 @@
 from collections import deque
 from termcolor import colored
 
-from Child import Child
-
 # define board size
 board_size_width = 18
 board_size_height = 13
