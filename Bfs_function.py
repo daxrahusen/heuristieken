@@ -118,28 +118,21 @@ class Bfs_function:
     #
     def lookup_next(self, start_child, child):
 
-        if child[2] == EAST:
-            print EAST
+        if child[2][0] == EAST:
             previous_child = (child[0] - 1, child[1])
             path.append(previous_child)
-        elif child[2] == WEST:
-            print WEST
+        elif child[2][0] == WEST:
             previous_child = (child[0] + 1, child[1])
             path.append(previous_child)
-        elif child[2] == NORTH:
-            print NORTH
+        elif child[2][0] == NORTH:
             previous_child = (child[0], child[1] - 1)
             path.append(previous_child)
-        elif child[2] == SOUTH:
-            print SOUTH
+        elif child[2][0] == SOUTH:
             previous_child = (child[0], child[1] + 1)
             path.append(previous_child)
 
-        print path
-
         for explored_child in compass:
             if (explored_child[0], explored_child[1]) == (previous_child[0], previous_child[1]):
-                print (explored_child[0], explored_child[1])
                 if (explored_child[0], explored_child[1]) == start_child:
                     print path
                     break
