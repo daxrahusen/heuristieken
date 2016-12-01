@@ -1,12 +1,17 @@
 from collections import deque
 from termcolor import colored
 
+# import classes
+from Node import Node
+
 # define board size
 board_size_width = 18
 board_size_height = 13
 
 # initialize expored array
 explored = []
+compass = []
+path = []
 
 # define destinations array
 x_destinations = []
@@ -18,10 +23,16 @@ solution = False
 # printing variables
 EMPTY = ' '
 GATE = colored('#', 'red')
-XLINE = '-'
-YLINE = '|'
+XLINE = colored('-', 'yellow')
+YLINE = colored('|', 'yellow')
 BEGIN = colored('#', 'green')
 END = colored('#', 'green')
+
+#
+NORTH = 'N'
+EAST = 'E'
+SOUTH = 'S'
+WEST = 'W'
 
 class Bfs_function:
 
@@ -63,20 +74,32 @@ class Bfs_function:
     # find and calculate the childeren
     def makechildren(self, x,y):
 
-        children = [(x-1, y),(x,y - 1),(x,y + 1),(x + 1,y)]
+        children = [(x-1, y, []),(x, y - 1, []),(x, y + 1, []),(x + 1, y, [])]
 
         for child in children:
             if child[0] >= 0 and child[1] >= 0 and child[0] <= board_size_width and child[1] <= board_size_height:
-                if not child in explored:
+                if not (child[0], child[1]) in explored:
+                    if child[0] > x:
+                        child[2].append(EAST)
+                    elif child[0] < x:
+                        child[2].append(WEST)
+                    elif child[1] > y:
+                        child[2].append(NORTH)
+                    elif child[1] < y:
+                        child[2].append(SOUTH)
 
                     self.queue.append(child)
 
-                    explored.append(child)
+                    explored.append((child[0], child[1]))
+                    compass.append(child)
 
                     self.print_child_state(child)
 
         if child[0] == x_destinations[0] and child[1] == y_destinations[0]:
 
+            self.lookup_next((9, 10), child)
+
+            # print compass
             solution = True
             return solution
         else:
@@ -89,6 +112,36 @@ class Bfs_function:
 
     #
     def print_child_state(self, child):
-
         self.board.set_value(colored('*', 'blue'), child[0], child[1])
         self.board.print_board()
+
+    #
+    def lookup_next(self, start_child, child):
+
+        if child[2] == EAST:
+            print EAST
+            previous_child = (child[0] - 1, child[1])
+            path.append(previous_child)
+        elif child[2] == WEST:
+            print WEST
+            previous_child = (child[0] + 1, child[1])
+            path.append(previous_child)
+        elif child[2] == NORTH:
+            print NORTH
+            previous_child = (child[0], child[1] - 1)
+            path.append(previous_child)
+        elif child[2] == SOUTH:
+            print SOUTH
+            previous_child = (child[0], child[1] + 1)
+            path.append(previous_child)
+
+        print path
+
+        for explored_child in compass:
+            if (explored_child[0], explored_child[1]) == (previous_child[0], previous_child[1]):
+                print (explored_child[0], explored_child[1])
+                if (explored_child[0], explored_child[1]) == start_child:
+                    print path
+                    break
+                else:
+                    self.lookup_next(start_child, explored_child)

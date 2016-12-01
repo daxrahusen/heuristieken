@@ -50,4 +50,8 @@ def main():
         # make delay of 20FSP per seconds
         clock.tick(FPS)
 
+    board.print_board()
+
+
+
 main()
