@@ -32,7 +32,7 @@ solution = False
 
 # define the Frame Per Seconds
 # for animations
-FPS = 20
+FPS = 40
 
 # Main entrance function
 def main():
@@ -50,9 +50,7 @@ def main():
         # make delay of 20FSP per seconds
         clock.tick(FPS)
 
-    
+    board.clear_path()
     board.print_board()
-
-
 
 main()

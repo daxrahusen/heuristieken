@@ -1,7 +1,14 @@
 import sys
+from termcolor import colored
 
-# printing variables
+# printing variaes
 EMPTY = ' '
+GATE = colored('#', 'red')
+XLINE = colored('-', 'yellow')
+YLINE = colored('|', 'yellow')
+BEGIN = colored('#', 'green')
+END = colored('#', 'green')
+CURSOR = colored('*', 'blue')
 
 class Grid:
 
@@ -18,14 +25,24 @@ class Grid:
             for j in range(self.width + 1):
                 self._grid[i].append(EMPTY)
 
+    # set the value to the position in the board
     def set_value(self, value, x, y):
         self._grid[y][x] = value
 
+    # get the value from the position on the board
     def get_value(self, x, y):
         return self._grid[y][x]
 
+    # print the full board to the console
     def print_board(self):
         for row in self._grid:
             for item in row:
                 sys.stdout.write(item + '   ')
             print('\n')
+
+    # clear the defined path & Empty
+    def clear_path(self):
+        for i in range(self.height + 1):
+            for j in range(self.width + 1):
+                if self._grid[i][j] == CURSOR:
+                    self._grid[i][j] = EMPTY

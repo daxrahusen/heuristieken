@@ -11,7 +11,6 @@ board_size_height = 13
 # initialize expored array
 explored = []
 compass = []
-path = []
 
 # define destinations array
 x_destinations = []
@@ -20,13 +19,14 @@ y_destinations = []
 # set the solution object
 solution = False
 
-# printing variables
+# printing variaes
 EMPTY = ' '
 GATE = colored('#', 'red')
 XLINE = colored('-', 'yellow')
 YLINE = colored('|', 'yellow')
 BEGIN = colored('#', 'green')
 END = colored('#', 'green')
+CURSOR = colored('*', 'blue')
 
 #
 NORTH = 'N'
@@ -40,6 +40,7 @@ class Bfs_function:
     def __init__(self, board):
         self.board = board
         self.queue = deque()
+        self.path = []
 
         # gate positions
         gates_x = [12,1,6,10,15,3,12,14,12,8,1,4,11,16,13,16,2,6,9,11,15,1,2,9,1]
@@ -112,7 +113,7 @@ class Bfs_function:
 
     #
     def print_child_state(self, child):
-        self.board.set_value(colored('*', 'blue'), child[0], child[1])
+        self.board.set_value(CURSOR, child[0], child[1])
         self.board.print_board()
 
     #
@@ -120,21 +121,25 @@ class Bfs_function:
 
         if child[2][0] == EAST:
             previous_child = (child[0] - 1, child[1])
-            path.append(previous_child)
+            self.path.append(previous_child)
+            self.board.set_value(XLINE, previous_child[0], previous_child[1])
         elif child[2][0] == WEST:
             previous_child = (child[0] + 1, child[1])
-            path.append(previous_child)
+            self.path.append(previous_child)
+            self.board.set_value(XLINE, previous_child[0], previous_child[1])
         elif child[2][0] == NORTH:
             previous_child = (child[0], child[1] - 1)
-            path.append(previous_child)
+            self.path.append(previous_child)
+            self.board.set_value(YLINE, previous_child[0], previous_child[1])
         elif child[2][0] == SOUTH:
             previous_child = (child[0], child[1] + 1)
-            path.append(previous_child)
+            self.path.append(previous_child)
+            self.board.set_value(YLINE, previous_child[0], previous_child[1])
 
         for explored_child in compass:
             if (explored_child[0], explored_child[1]) == (previous_child[0], previous_child[1]):
                 if (explored_child[0], explored_child[1]) == start_child:
-                    print path
+                    print self.path
                     break
                 else:
                     self.lookup_next(start_child, explored_child)
