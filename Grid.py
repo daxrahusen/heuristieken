@@ -46,3 +46,8 @@ class Grid:
             for j in range(self.width + 1):
                 if self._grid[i][j] == CURSOR:
                     self._grid[i][j] = EMPTY
+
+    #
+    def add_start_end_gates(self, start_gate, end_gate):
+        self._grid[start_gate[1]][start_gate[0]] = GATE
+        self._grid[end_gate[1]][end_gate[0]] = GATE

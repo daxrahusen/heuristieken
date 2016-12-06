@@ -51,6 +51,7 @@ def main():
         clock.tick(FPS)
 
     board.clear_path()
+    board.add_start_end_gates(bfs.get_start_gate(), bfs.get_end_gate())
     board.print_board()
 
 main()

@@ -16,6 +16,10 @@ compass = []
 x_destinations = []
 y_destinations = []
 
+# set emty x and y coordinates
+x = []
+y = []
+
 # set the solution object
 solution = False
 
@@ -49,10 +53,6 @@ class Bfs_function:
         # netlist start and end separately
         startcoordinates = [23,5,1,15,3,7,23,22,15,20,15,13,19,22,10,11,3,2,3,20,16,19,3,15,6,7,9,22,10]
         endcoordinates = [4,7,0,21,5,13,8,13,17,10,8,18,2,11,4,24,15,20,4,19,9,5,0,5,14,9,13,16,7]
-
-        # set emty x and y coordinates
-        x = []
-        y = []
 
         # loopt through all the assigned element in the list
         # and append all the (start & end) locations into the list
@@ -115,6 +115,14 @@ class Bfs_function:
     def print_child_state(self, child):
         self.board.set_value(CURSOR, child[0], child[1])
         self.board.print_board()
+
+    #
+    def get_start_gate(self):
+        return (x[0], y[0])
+
+    #
+    def get_end_gate(self):
+        return (x_destinations[0], y_destinations[0])
 
     #
     def lookup_next(self, start_child, child):
