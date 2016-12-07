@@ -13,12 +13,12 @@ explored = []
 compass = []
 
 # define destinations array
-x_destinations = []
-y_destinations = []
+# x_destinations = []
+# y_destinations = []
 
 # set emty x and y coordinates
-x = []
-y = []
+# x = []
+# y = []
 
 # set the solution object
 solution = False
@@ -45,6 +45,11 @@ class Bfs_function:
         self.board = board
         self.queue = deque()
         self.path = []
+        self.x = []
+        self.y = []
+        self.index_gate = 0
+        self.x_destinations = []
+        self.y_destinations = []
 
         # gate positions
         gates_x = [12,1,6,10,15,3,12,14,12,8,1,4,11,16,13,16,2,6,9,11,15,1,2,9,1]
@@ -54,26 +59,28 @@ class Bfs_function:
         startcoordinates = [23,5,1,15,3,7,23,22,15,20,15,13,19,22,10,11,3,2,3,20,16,19,3,15,6,7,9,22,10]
         endcoordinates = [4,7,0,21,5,13,8,13,17,10,8,18,2,11,4,24,15,20,4,19,9,5,0,5,14,9,13,16,7]
 
+        self.netlist_counter = len(startcoordinates)
+
         # loopt through all the assigned element in the list
         # and append all the (start & end) locations into the list
-        for i in range(0, 24):
+        for i in range(0, len(gates_x)):
                  explored.append((gates_x[i],gates_y[i]))
                  self.board.set_value(GATE, gates_x[i], gates_y[i])
 
-                 x.append(gates_x[startcoordinates[i]])
-                 y.append(gates_y[startcoordinates[i]])
+                 self.x.append(gates_x[startcoordinates[i]])
+                 self.y.append(gates_y[startcoordinates[i]])
 
-                 x_destinations.append(gates_x[endcoordinates[i]])
-                 y_destinations.append(gates_y[endcoordinates[i]])
+                 self.x_destinations.append(gates_x[endcoordinates[i]])
+                 self.y_destinations.append(gates_y[endcoordinates[i]])
 
         # set the first startchilderen
-        self.makechildren(x[0], y[0])
+        self.makechildren(self.x[self.index_gate], self.y[self.index_gate])
 
         # removed the end coordinates [x,y]
-        explored.pop(4)
+        explored.pop(endcoordinates[self.index_gate])
 
     # find and calculate the childeren
-    def makechildren(self, x,y):
+    def makechildren(self, x, y):
 
         children = [(x-1, y, []),(x, y - 1, []),(x, y + 1, []),(x + 1, y, [])]
 
@@ -96,9 +103,9 @@ class Bfs_function:
 
                     self.print_child_state(child)
 
-        if child[0] == x_destinations[0] and child[1] == y_destinations[0]:
+        if child[0] == self.x_destinations[0] and child[1] == self.y_destinations[0]:
 
-            self.lookup_next((9, 10), child)
+            self.lookup_next((self.x[self.index_gate], self.y[self.index_gate]), child)
 
             # print compass
             solution = True
@@ -118,11 +125,11 @@ class Bfs_function:
 
     #
     def get_start_gate(self):
-        return (x[0], y[0])
+        return (self.x[0], self.y[0])
 
     #
     def get_end_gate(self):
-        return (x_destinations[0], y_destinations[0])
+        return (self.x_destinations[0], self.y_destinations[0])
 
     #
     def lookup_next(self, start_child, child):
