@@ -88,6 +88,8 @@ class Bfs_function:
 
         for child in children:
             if child[0] >= 0 and child[1] >= 0 and child[0] <= board_size_width and child[1] <= board_size_height:
+                # print child
+                #print self.explored[-1]
                 if not (child[0], child[1]) in self.explored:
                     if child[0] > x:
                         child[2].append(EAST)

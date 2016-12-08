@@ -4,6 +4,9 @@ import sys
 import os
 import time
 import pygame
+import sys
+
+sys.setrecursionlimit(15000)
 pygame.init()
 
 # import classes
@@ -33,22 +36,45 @@ def main():
 
     # initialize empty board
     board = Grid(13, 18)
+
+    # initialize the bfs function & make the first childs
+    # from the start gate & add to the queue
     bfs = Bfs_function(board)
 
-    while bfs.netlist_counter > 0:
+    # loop through the netlist until there are none
+    while bfs.netlist_counter >= 0:
 
+        print bfs.netlist_counter
+
+        # loop untill
         while True:
-            # print "Queue: ", bfs.queue[0][0], bfs.queue[0][1]
-            solution = bfs.makechildren(bfs.queue[0][0], bfs.queue[0][1])
-            bfs.pop_queue_left()
-            if solution == True:
-                bfs.queue.clear()
-                bfs.netlist_counter -= 1
-                bfs.index_gate += 1
-                bfs.explored = []
-                solution = False
 
-                print "Next coordinates : ", bfs.x[bfs.index_gate], bfs.y[bfs.index_gate]
+            # find the shorest path from the queue
+            solution = bfs.makechildren(bfs.queue[0][0], bfs.queue[0][1])
+
+            # pop the left element in the queue
+            bfs.pop_queue_left()
+
+            # if the solution is found
+            if solution == True:
+
+                # clear the queue if found
+                bfs.queue.clear()
+
+                # set decrease the netlist counter for the next bfs search
+                bfs.netlist_counter -= 1
+
+                #
+                bfs.index_gate += 1
+
+                # delete the explored list
+                del bfs.explored[:]
+
+                # make the first childs from the start gate & add to the queue
+                bfs.makechildren(bfs.x[bfs.index_gate], bfs.y[bfs.index_gate])
+
+                #
+                solution = False
 
                 break
 
