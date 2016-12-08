@@ -14,12 +14,6 @@ from Bfs_function import Bfs_function
 board_size_width = 18
 board_size_height = 13
 
-# initialize expored array
-explored = []
-
-# initialize deque object
-queue = deque()
-
 # initialize pygame time ticker
 clock = pygame.time.Clock()
 
@@ -44,43 +38,24 @@ def main():
     while bfs.netlist_counter > 0:
 
         while True:
+            # print "Queue: ", bfs.queue[0][0], bfs.queue[0][1]
             solution = bfs.makechildren(bfs.queue[0][0], bfs.queue[0][1])
             bfs.pop_queue_left()
             if solution == True:
                 bfs.queue.clear()
                 bfs.netlist_counter -= 1
                 bfs.index_gate += 1
+                bfs.explored = []
                 solution = False
+
+                print "Next coordinates : ", bfs.x[bfs.index_gate], bfs.y[bfs.index_gate]
+
                 break
 
             clock.tick(FPS)
 
         board.clear_path()
-        board.add_start_end_gates((bfs.x[bfs.index_gate], bfs.y[bfs.index_gate]), (bfs.x_destinations[bfs.index_gate], bfs.y_destinations[bfs.index_gate]))
+        board.add_start_end_gates((bfs.x[bfs.index_gate - 1], bfs.y[bfs.index_gate - 1]), (bfs.x_destinations[bfs.index_gate  - 1], bfs.y_destinations[bfs.index_gate - 1]))
         board.print_board()
-
-
-    # while gate_counter > 0:
-        # while solution == True:
-            # bfs.makechildren(queue[x-element], queue[y-element])
-            # if solution == True:
-                # gate_counter--
-                # break
-        # board.clear_path()
-        # board.add_start_end_gates(start_gate, end_gate)
-        # board.print_board()
-
-    # while True:
-    #     solution = bfs.makechildren(bfs.queue[0][0], bfs.queue[0][1])
-    #     bfs.pop_queue_left()
-    #     if solution == True:
-    #         break
-    #
-    #     # make delay of 20FSP per seconds
-    #     clock.tick(FPS)
-    #
-    # board.clear_path()
-    # board.add_start_end_gates(bfs.get_start_gate(), bfs.get_end_gate())
-    # board.print_board()
 
 main()

@@ -49,5 +49,5 @@ class Grid:
 
     #
     def add_start_end_gates(self, start_gate, end_gate):
-        self._grid[start_gate[1]][start_gate[0]] = GATE
-        self._grid[end_gate[1]][end_gate[0]] = GATE
+        self.set_value(GATE, start_gate[0], start_gate[1])
+        self.set_value(GATE, end_gate[0], end_gate[1])

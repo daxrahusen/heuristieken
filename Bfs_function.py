@@ -9,8 +9,8 @@ board_size_width = 18
 board_size_height = 13
 
 # initialize expored array
-explored = []
-compass = []
+# explored = []
+# self.compass = []
 
 # define destinations array
 # x_destinations = []
@@ -50,6 +50,8 @@ class Bfs_function:
         self.index_gate = 0
         self.x_destinations = []
         self.y_destinations = []
+        self.explored = []
+        self.compass = []
 
         # gate positions
         gates_x = [12,1,6,10,15,3,12,14,12,8,1,4,11,16,13,16,2,6,9,11,15,1,2,9,1]
@@ -64,7 +66,7 @@ class Bfs_function:
         # loopt through all the assigned element in the list
         # and append all the (start & end) locations into the list
         for i in range(0, len(gates_x)):
-                 explored.append((gates_x[i],gates_y[i]))
+                 self.explored.append((gates_x[i],gates_y[i]))
                  self.board.set_value(GATE, gates_x[i], gates_y[i])
 
                  self.x.append(gates_x[startcoordinates[i]])
@@ -77,7 +79,7 @@ class Bfs_function:
         self.makechildren(self.x[self.index_gate], self.y[self.index_gate])
 
         # removed the end coordinates [x,y]
-        explored.pop(endcoordinates[self.index_gate])
+        self.explored.pop(endcoordinates[self.index_gate])
 
     # find and calculate the childeren
     def makechildren(self, x, y):
@@ -86,7 +88,7 @@ class Bfs_function:
 
         for child in children:
             if child[0] >= 0 and child[1] >= 0 and child[0] <= board_size_width and child[1] <= board_size_height:
-                if not (child[0], child[1]) in explored:
+                if not (child[0], child[1]) in self.explored:
                     if child[0] > x:
                         child[2].append(EAST)
                     elif child[0] < x:
@@ -98,8 +100,8 @@ class Bfs_function:
 
                     self.queue.append(child)
 
-                    explored.append((child[0], child[1]))
-                    compass.append(child)
+                    self.explored.append((child[0], child[1]))
+                    self.compass.append(child)
 
                     self.print_child_state(child)
 
@@ -107,7 +109,6 @@ class Bfs_function:
 
             self.lookup_next((self.x[self.index_gate], self.y[self.index_gate]), child)
 
-            # print compass
             solution = True
             return solution
         else:
@@ -151,10 +152,10 @@ class Bfs_function:
             self.path.append(previous_child)
             self.board.set_value(YLINE, previous_child[0], previous_child[1])
 
-        for explored_child in compass:
-            if (explored_child[0], explored_child[1]) == (previous_child[0], previous_child[1]):
-                if (explored_child[0], explored_child[1]) == start_child:
+        for self.explored_child in self.compass:
+            if (self.explored_child[0], self.explored_child[1]) == (previous_child[0], previous_child[1]):
+                if (self.explored_child[0], self.explored_child[1]) == start_child:
                     print self.path
                     break
                 else:
-                    self.lookup_next(start_child, explored_child)
+                    self.lookup_next(start_child, self.explored_child)
